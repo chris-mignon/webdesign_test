@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Christopher Adrian William Henry Mignon</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #111832;
+      --text: #e8eefc;
+      --muted: #95a3c3;
+      --accent: #4f7cff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      display: grid; place-items: center;
+      background: radial-gradient(1200px 600px at 70% 10%, #152045 0%, var(--bg) 55%);
+      color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .card {
+      width: min(680px, 92vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(22px, 3.5vw, 28px); font-weight: 700; letter-spacing: 0.2px; }
+    p.subtitle { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+    blockquote {
+      margin: 0; padding: 18px 20px; border-left: 4px solid var(--accent);
+      background: rgba(79,124,255,0.08); border-radius: 12px;
+      font-size: clamp(20px, 3.8vw, 26px); line-height: 1.4; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main class="card" aria-live="polite">
+    <h1>Daily Affirmation</h1>
+  
+
+    <blockquote id="quote" aria-busy="true">Loading an uplifting thought…</blockquote>
+  </main>
+
+  <script>
+    const API_URL = 'https://api.allorigins.win/raw?url=https://www.affirmations.dev/';
+    const quoteEl = document.getElementById('quote');
+
+    async function fetchAffirmation() {
+      try {
+        const res = await fetch(API_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const text = (data && (data.affirmation || data.quote)) || 'You are capable and resilient.';
+        quoteEl.textContent = text;
+      } catch (err) {
+        console.error(err);
+        quoteEl.textContent = 'Could not load an affirmation right now. Please try again.';
+      }
+    }
+
+    // Load affirmation on page load
+    fetchAffirmation();
+  </script>
+</body>
+</html>
